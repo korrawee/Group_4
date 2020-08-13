@@ -2,8 +2,8 @@
 Block[] blocks;
 Ball[] balls;
 
-StringList ballvisibility ;
-StringList blockvisibility ;
+StringList ballvisibility;
+StringList blockvisibility;
 
 int amount = 10;
 int size = 20;
