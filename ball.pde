@@ -78,7 +78,7 @@ void draw()
   println("sum of ball's areas = " + sumArea);
   println("sum of block's areas = " + sumAreaBlock );
   noLoop();
-  fill(201,201,201);     /// orn 
+  fill(201,201,201);     /// show area on widget
   rect(300,350,360,100);
   fill(0);
   text(("sum of block's areas = " + sumAreaBlock ),200,350);
