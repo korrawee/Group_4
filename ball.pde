@@ -2,8 +2,11 @@
 Block[] blocks;
 Ball[] balls;
 
+StringList ballvisibility ;
+StringList blockvisibility ;
+
 int amount = 10;
-int size = 10;
+int size = 20;
 int posX = 50;
 int posY = 50;
 
@@ -11,27 +14,74 @@ int bW = 50;
 int bH = 50;
 
 float Area;
-
 void setup()
 {
   size(600,600);
   blocks = new Block[amount]; /*create blocks array*/
   balls =new Ball[amount]; /*create balls array*/  
+  ballvisibility = new StringList();
+  blockvisibility = new StringList();
+
 }
 void draw()
 {
+  float sumArea = 0;
+  float sumAreaBlock = 0;
   background(#FFFFFF);
   for(int i = 0; i < blocks.length; i++)
   {    
     int tmpBallX = posX + (i * (size*2));
     balls[i] = new Ball(size, tmpBallX, posY + bH);/*create each ball's object*/
     balls[i].draw();/*show each ball*/
-    
+    ballvisibility.append("visible");
+    String[] bi = ballvisibility.array();
+    if(mousePressed && bi[i] == "visible")
+    {
+      balls[i].invisible();
+      ballvisibility.set(i,"invisible") ;
+    }
+    else if(mousePressed && bi[i] == "invisible")
+    {
+      balls[i].draw();
+      ballvisibility.set(i,"visible");
+    }
+    if(bi[i] == "invisible")
+    {
+     sumArea += balls[i].getArea();
+    }
+    else 
+    {
+    }
     int tmpBlockX = posX + (i * bW); 
      blocks[i] =  new Block(tmpBlockX, posY, bW, bH); /*create each vlokc's object*/
      blocks[i].draw(); /*show each block*/
-     noLoop();
+     blockvisibility.append("visible");
+     String[] bli = blockvisibility.array();
+     if(mousePressed && bli[i] == "visible")
+     {
+       blocks[i].invisible();
+       blockvisibility.set(i,"invisible") ;
+     }
+     else if(mousePressed && bli[i] == "invisible")
+     {
+       blocks[i].draw();
+       blockvisibility.set(i,"visible") ;
+     }
+    if(bli[i] == "invisible")
+     {
+       sumAreaBlock += blocks[i].getArea();
+     }
+     else
+     {
+     }
   }
+  println("sum of ball's areas = " + sumArea);
+  println("sum of block's areas = " + sumAreaBlock );
+  noLoop();
+}
+void mousePressed()
+{
+  redraw();
 }
 class Ball
 {
@@ -49,10 +99,19 @@ class Ball
  
    void draw()
    {
-     size = 2 * size; /*increase size to radian*/
      fill(color( random(0,255), random(0,255), random(0,255), random(0,255)));
      ellipse(position_x, position_y, size, size);
     }
+   void invisible()
+   {
+     fill(#FFFFFF);
+     ellipse(position_x, position_y, size, size);
+   }
+   float getArea()
+   {
+     float area = 3.14 * size * size;
+     return area;
+   }
 }
 
 class Block
@@ -75,8 +134,15 @@ class Block
    rectMode(CENTER);
    rect(posX, posY, bWidth, bHeight);  
  }
-}
-void mousePressed()
-{
-  redraw();
+  void invisible()
+  {
+   fill(#FFFFFF);
+   rectMode(CENTER);
+   rect(posX, posY, bWidth, bHeight);  
+  }
+  float getArea()
+  {
+     float area = size * size;
+     return area;
+   }
 }
